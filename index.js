@@ -15,8 +15,14 @@ var db_config={
 
 app.use(session({
 	secret : "secret_password",
-	resave : true,
-	saveUninitialized : true
+	name: "session"
+	saveUninitialized : true,
+	resave: false,
+	cookie: {
+		httpOnly: true,
+		maxAge: 2*60*1000,
+		secure: false
+	}
 }));
 
 var connection;
@@ -80,12 +86,7 @@ app.post('/login',function(req,res){
 	var obj={};
 	var credentials=[usernm,passwd];
 	if(usernm&&passwd){
-		connection.query("select * from session where username=?;",[usernm],function(err,result){
-			if(err) throw err;
-			else if(result.length!=0){
-				res.send("Already signed in with username "+usernm);			
-			}	
-			else{
+		
 			connection.query("select * from signup where username=? and passwd=?;",credentials, function(err1, result){
 			if(err1) throw err1;
 			if(result.length!=0)
@@ -109,8 +110,7 @@ app.post('/login',function(req,res){
 			}
 			
 		});
-	}				
-		});
+					
 	}
 });
 
@@ -129,6 +129,8 @@ app.post('/logout',(req,res)=>{
 	
 });
 
-
+app.get('/homepage',(req,res)=>{
+	res.send(req.session.username);
+})
 
 app.listen(process.env.PORT||3000);
