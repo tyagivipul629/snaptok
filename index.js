@@ -21,7 +21,7 @@ app.use(session({
 	secure: false,
 	cookie: {
 		httpOnly: true,
-		maxAge: 2*60*1000,
+		maxAge: 5*60*1000,
 		secure: false
 	}
 }));
@@ -98,7 +98,6 @@ app.post('/login',function(req,res){
 				connection.query(sql1,function(err, result){
 					if(err) throw err;
 					else{
-						console.log(req.sessionID);
 						res.send('Logged in successfully with username '+req.session.username);
 						}
 
@@ -115,24 +114,25 @@ app.post('/login',function(req,res){
 	}
 });
 
-app.post('/logout',(req,res)=>{
-	var user=req.body.user;
-	req.session.loggedin=false;
-	req.session.username=null;
-	req.session.destroy();
-        connection.query("Delete from session where username=?;",[user],function(err,result){
-		if(err) throw err;
-		else{
-		res.send("User signed out successfully!");	
+app.get('/logout',(req,res)=>{
+	if(req.session.loggedin){
+		req.session.loggedin=false;
+		req.session.username=null;
+		req.session.destroy();
+		res.send("User logged out successfully!");
 	}
-
-	});
-	
+	else{
+		res.send("User is already logged out");
+	}
 });
 
 app.get('/homepage',(req,res)=>{
-	console.log(req.session);
-	res.send(req.session.username);
+	if(req.session.loggedin){
+		res.send(req.session.username+" is logged in currently");
+	}
+	else{
+		res.send("No user is logged in currently");
+	}
 })
 
 app.listen(process.env.PORT||3000);
