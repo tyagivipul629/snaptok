@@ -1,17 +1,17 @@
-var app=require('express')()
-var mysql=require('mysql')
-var bodyParser=require('body-parser')
-var session=require('express-session')
-var cors = require('cors')
+var app=require('express')();
+var mysql=require('mysql');
+var bodyParser=require('body-parser');
+var session=require('express-session');
+var cors = require('cors');
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors())
+app.use(cors());
 
 var db_config={
 	host: 'us-cdbr-east-03.cleardb.com',
 	user: 'b99ba2ee8b2948',
 	password: '9834f978',
 	database: 'heroku_e3a30a5672a88ce'
-};
+}
 
 app.use(session({
 	secret : "secret_password",
