@@ -1,0 +1,21 @@
+The server has 5 API endpoints. These are given below:
+1. http://snaptok.herokuapp.com/
+   This endpoint can be invoked using below curl command:
+   curl http://snaptok.herokuapp.com/
+   The expected response is "This is the home route of snaptok application"
+2. http://snaptok.herokuapp.com/signup
+   parameters: username, password, email, phone
+   This is a POST request which can be invoked in the following way:
+   curl -X POST -d 'usrnm=<ANY_USERNAME_HERE>&passwrd=<PASSWORD_HERE>&email=<EMAIL_HERE>&phone=<PHONE_HERE>' 'http://snaptok.herokuapp.com/signup'
+   If a user with given username already exists, then the response will be:"Account already exists! Please choose another username!"
+   Otherwise, on successfull registration, the message will be:"Signed up successfully with username <USERNAME_YOU_PROVIDED>"
+3. http://snaptok.herokuapp.com/login
+   parameters: username, password
+   This is also a POST request whivh can be invoked in the following way:
+   curl -X POST -d 'usrnm=<ANY_USERNAME_HERE>&passwrd=<PASSWORD_HERE>' 'http://snaptok.herokuapp.com/login'
+   On successful login, the expected response is:"Logged in successfully with username <USER_YOU_SIGNED_IN_WITH>"
+   If the user is already logged in, the response is:"Already signed in"
+   Otherwise, on incorrect username/password, the response is:"Incorrect Username and/or Password"
+4. http://snaptok.herokuapp.com/logout
+   curl -X POST -d 'user=<CURRENTLY_LOGGED_IN_USER>' 'http://snaptok.herokuapp.com/logout'
+   On successful logout, the response is:"User signed out successfully!"

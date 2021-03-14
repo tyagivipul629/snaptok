@@ -129,16 +129,6 @@ app.post('/logout',(req,res)=>{
 	
 });
 
-app.get('/homepage',(req,res)=>{
-	connection.query("select * from session;",function(err,result){
-		if(err) throw err;
-		else if(result.length==0){
-			res.send("No user is logged in currently! Please login first");
-		}
-		else{
-			res.send(result[0].username+" is logged in currently");
-		}
-	})
-});
+
 
 app.listen(process.env.PORT||3000);
