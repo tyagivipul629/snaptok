@@ -17,10 +17,10 @@ The server has 5 API endpoints. These are given below:
    If the user is already logged in, the response is:"Already signed in"
    Otherwise, on incorrect username/password, the response is:"Incorrect Username and/or Password"
 4. http://snaptok.herokuapp.com/logout
-   curl -X POST -d 'user=<CURRENTLY_LOGGED_IN_USER>' --cookie-jar file.txt 'http://snaptok.herokuapp.com/logout'
+   curl -b file.txt 'http://snaptok.herokuapp.com/logout'
    On successful logout, the response is:"User signed out successfully!"
 5. http://snaptok.herokuapp.com/homepage
-   curl --cookie-jar file.txt http://snaptok.herokuapp.com/homepage
+   curl -b file.txt http://snaptok.herokuapp.com/homepage
    If a user is logged in currently, his name will be returned as response. Otherwise, the returned response will be:
    "No user is logged in currently"
 
