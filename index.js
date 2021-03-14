@@ -130,6 +130,7 @@ app.post('/logout',(req,res)=>{
 });
 
 app.get('/homepage',(req,res)=>{
+	console.log(req.session);
 	res.send(req.session.username);
 })
 
