@@ -1,10 +1,10 @@
 var app=require('express')()
-var mysql=require('mysql');
-var bodyParser=require('body-parser');
-var session=require('express-session');
+var mysql=require('mysql')
+var bodyParser=require('body-parser')
+var session=require('express-session')
 var cors = require('cors')
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
+app.use(cors())
 
 var db_config={
 	host: 'us-cdbr-east-03.cleardb.com',
