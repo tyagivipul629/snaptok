@@ -15,7 +15,7 @@ var db_config={
 
 app.use(session({
 	secret : "secret_password",
-	name: "session"
+	name: "session",
 	saveUninitialized : true,
 	resave: false,
 	cookie: {
