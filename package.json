@@ -1,0 +1,22 @@
+{
+  "name": "snaptok",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "8.10.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mysql": "^2.17.1",
+    "body-parser": "^1.19.0",
+    "express-session": "^1.16.2",
+    "cors": "^2.8.5"
+  }
+}
