@@ -9,8 +9,8 @@ app.use(cors());
 var db_config={
 	host: 'us-cdbr-east-03.cleardb.com',
 	user: 'b99ba2ee8b2948',
-	password: '9834f978',
-	database: 'heroku_e3a30a5672a88ce'
+	password: '********',
+	database: '**********'
 }
 
 app.use(session({
