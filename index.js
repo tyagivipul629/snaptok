@@ -16,3 +16,4 @@ mongoose.connect("mongodb+srv://vipul:vipul1234@vipulcluster.ssrmc.mongodb.net/v
 
 })
 .catch((err)=>console.log("could not connect:",err));
+console.log("hello");
