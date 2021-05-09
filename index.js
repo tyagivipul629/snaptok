@@ -11,7 +11,7 @@ mongoose.connect("mongodb+srv://vipul:vipul1234@vipulcluster.ssrmc.mongodb.net/v
     const User=mongoose.model('student',nameSchema1);
     User.find({},function(err,data){
         if(err) throw err;
-        else {console.log(data);}
+        else {console.log(data);mongoose.connection.close();}
     })
 
 })
