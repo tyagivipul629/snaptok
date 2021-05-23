@@ -40,12 +40,12 @@ const upload = multer({
 app.post('/post',upload.single('file'),(req,res)=>{
 	console.log(req.body);
 	console.log(req.file);
-/*bucket.upload(req.file.path,{destination: 'images/'+req.file.filename},function(err,file,response){
-        console.log(file);
+bucket.upload(req.file.path,{destination: 'images/'+req.file.filename},function(err,file,response){
+        //console.log(file);
         if(err) throw err;
         else res.send('https://storage.googleapis.com//'+bucket.name);
-    })*/
-    res.send(JSON.stringify({'status':'success'}))
+    })
+    //res.send(JSON.stringify({'status':'success'}))
 })
 
 
