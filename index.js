@@ -35,15 +35,7 @@ const upload = multer({
     storage: storage1
 })
 
-app.get('/fetchPosts',(req,res)=>{
 
-    SocialPost.find({},function(err,data){
-        if(err) throw err;
-        else{
-            res.send(JSON.stringify({'status':'success','posts':data}))
-        }
-    })
-})
 
 app.post('/post',upload.single('file'),(req,res)=>{
 	console.log(req.body);
@@ -57,7 +49,7 @@ app.post('/post',upload.single('file'),(req,res)=>{
 })
 
 
-app.listen(8080,function(error) {
+app.listen(process.env.PORT||8080,function(error) {
 	if(error) throw error
 		console.log("Server created Successfully on PORT 8080")
 })
