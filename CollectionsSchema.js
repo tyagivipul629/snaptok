@@ -13,6 +13,7 @@ const PostSchema=mongoose.Schema({
     title: String,
     description: String,
     file: String,
+    fileType: String,
     subGratis: String,
     dateOfPost: String,
     likes: Number,

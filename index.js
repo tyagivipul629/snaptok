@@ -39,6 +39,13 @@ const upload = multer({
 })
 
 
+app.get('/fetchPosts',(req,res)=>{
+	SocialPost.find({},function(err,result){
+		if(err) res.send(err);
+		else res.json(result);
+       })
+})
+
 
 app.post('/post',upload.single('file'),(req,res)=>{
 	
