@@ -38,13 +38,37 @@ const upload = multer({
     storage: storage1
 })
 
+app.get('/',(req,res)=>{
+	res.json({"status":"success"});
+})
+
 
 app.get('/fetchPosts',(req,res)=>{
-console.log("fetch post reached");
+console.log("fetch post");
 	SocialPost.find({},function(err,result){
 		if(err) res.send(err);
 		else res.json(result);
        })
+})
+
+app.post('/like',(req,res)=>{
+	var action=req.body.action=="decrease"?-1:1;
+	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{likes: action}},function(err,response){
+		if(err) throw err;
+		else{
+			res.json({});
+		}
+	})
+})
+
+app.post('/dislike',(req,res)=>{
+	var action=req.body.action=="decrease"?-1:1;
+	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{dislikes: action}},function(err,response){
+		if(err) throw err;
+		else{
+			res.json({});
+		}
+	})
 })
 
 
