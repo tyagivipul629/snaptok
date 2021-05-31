@@ -44,7 +44,7 @@ app.get('/',(req,res)=>{
 
 
 app.get('/fetchPosts',(req,res)=>{
-console.log("fetch post");
+console.log("post fetch reached");
 	SocialPost.find({},function(err,result){
 		if(err) res.send(err);
 		else res.json(result);
