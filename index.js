@@ -51,6 +51,7 @@ app.get('/fetchPosts',(req,res)=>{
 })
 
 app.post('/like',(req,res)=>{
+	console.log("liked");
 	var action=req.body.action=="decrease"?-1:1;
 	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{likes: action}},function(err,response){
 		if(err) throw err;
@@ -61,7 +62,7 @@ app.post('/like',(req,res)=>{
 })
 
 app.post('/dislike',(req,res)=>{
-	console.log("disliked");
+	
 	var action=req.body.action=="decrease"?-1:1;
 	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{dislikes: action}},function(err,response){
 		if(err) throw err;
