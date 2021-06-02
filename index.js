@@ -72,7 +72,7 @@ app.post('/dislike',(req,res)=>{
 
 
 app.post('/post',upload.single('file'),(req,res)=>{
-	
+	console.log("post reached");
 	
 bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(err,file,response){
         if(err) throw err;
