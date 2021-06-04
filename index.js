@@ -61,6 +61,17 @@ app.post('/like',(req,res)=>{
 	})
 })
 
+app.post('/changeProfile',upload.single('image'),(req,res)=>{
+	if(req.file){
+		bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(err,file,response){
+        if(err) throw err;
+        else{
+			fs.unlink(req.file.path,(err)=>{if(err) throw err;})
+			res.json({"status": "success","URL": file.metadata.mediaLink})
+		}
+    })}
+})
+
 app.post('/dislike',(req,res)=>{
 	
 	var action=req.body.action=="decrease"?-1:1;
