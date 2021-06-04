@@ -51,6 +51,7 @@ app.get('/fetchPosts',(req,res)=>{
 })
 
 app.post('/like',(req,res)=>{
+	console.log("liked");
 	var action=req.body.action=="decrease"?-1:1;
 	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{likes: action}},function(err,response){
 		if(err) throw err;
@@ -60,7 +61,19 @@ app.post('/like',(req,res)=>{
 	})
 })
 
+app.post('/changeProfile',upload.single('image'),(req,res)=>{
+	if(req.file){
+		bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(err,file,response){
+        if(err) throw err;
+        else{
+			fs.unlink(req.file.path,(err)=>{if(err) throw err;})
+			res.json({"status": "success","URL": file.metadata.mediaLink})
+		}
+    })}
+})
+
 app.post('/dislike',(req,res)=>{
+	
 	var action=req.body.action=="decrease"?-1:1;
 	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{dislikes: action}},function(err,response){
 		if(err) throw err;
@@ -74,13 +87,12 @@ app.post('/dislike',(req,res)=>{
 app.post('/post',upload.single('file'),(req,res)=>{
 	console.log("post reached");
 	
-bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(err,file,response){
+if(req.file){bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(err,file,response){
         if(err) throw err;
         else{
 			fs.unlink(req.file.path,(err)=>{if(err) throw err;})
 			req.body.file=file.metadata.mediaLink;
 			var newPost=new SocialPost(req.body);
-			console.log(newPost);
 			newPost.save().then((item)=>{
 				res.json({"Status":"Success"});
 			}).catch(err=>{
@@ -88,7 +100,17 @@ bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(e
 				res.status(400).json({"Status":"Failure"});
 			})
 		}
-    })
+    })}
+	else{
+			req.body.file="";
+			var newPost=new SocialPost(req.body);
+			newPost.save().then((item)=>{
+				res.json({"Status":"Success"});
+			}).catch(err=>{
+				console.log(err);
+				res.status(400).json({"Status":"Failure"});
+			})
+	}
 })
 
 
