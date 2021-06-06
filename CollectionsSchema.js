@@ -9,6 +9,7 @@ mongoose.connect(connector.connector,{useNewUrlParser:true,useUnifiedTopology: t
 
 const PostSchema=mongoose.Schema({
     author: String,
+    uid: String,
     email: String,
     title: String,
     description: String,
