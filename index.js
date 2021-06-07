@@ -44,7 +44,7 @@ app.get('/',(req,res)=>{
 
 
 app.get('/fetchPosts',(req,res)=>{
-	SocialPost.find({},{comments: 0},function(err,result){
+	SocialPost.find({},{comments: 0,description: 0},function(err,result){
 		if(err) res.send(err);
 		else res.json(result);
        })
