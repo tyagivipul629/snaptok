@@ -44,7 +44,7 @@ app.get('/',(req,res)=>{
 
 
 app.get('/fetchPosts',(req,res)=>{
-	SocialPost.find({},function(err,result){
+	SocialPost.find({},{comments: 0},function(err,result){
 		if(err) res.send(err);
 		else res.json(result);
        })
@@ -71,6 +71,7 @@ app.post('/changeProfile',upload.single('image'),(req,res)=>{
 		}
     })}
 })
+
 
 app.post('/dislike',(req,res)=>{
 	
