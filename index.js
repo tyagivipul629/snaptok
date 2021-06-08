@@ -80,18 +80,6 @@ app.post('/changeProfile',upload.single('image'),(req,res)=>{
 })
 
 
-app.post('/dislike',(req,res)=>{
-	
-	var action=req.body.action=="decrease"?-1:1;
-	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{dislikes: action}},function(err,response){
-		if(err) throw err;
-		else{
-			res.json({});
-		}
-	})
-})
-
-
 app.post('/post',upload.single('file'),(req,res)=>{
 	console.log("post reached");
 	
