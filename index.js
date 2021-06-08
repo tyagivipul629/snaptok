@@ -50,6 +50,13 @@ app.get('/fetchPosts',(req,res)=>{
        })
 })
 
+app.delete('/deletePost',(req,res)=>{
+	SocialPost.findOneAndDelete({_id: req.body.id},function(err,result){
+		if(err) res.send(err);
+		else res.json({'status': 'deleted successfully'});
+	})
+})
+
 app.get('/fetchPost/:id',(req,res)=>{
 	SocialPost.findOne({_id: req.params.id},function(err,post){
 		if(err) res.send(err);
