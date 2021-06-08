@@ -50,7 +50,7 @@ app.get('/fetchPosts',(req,res)=>{
        })
 })
 
-app.delete('/deletePost',(req,res)=>{
+app.post('/deletePost',(req,res)=>{
 console.log(req.body);
 	SocialPost.findOneAndDelete({_id: req.body.id},function(err,result){
 		if(err) res.send(err);
