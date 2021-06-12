@@ -18,6 +18,7 @@ const PostSchema=mongoose.Schema({
     subGratis: String,
     dateOfPost: String,
     likes: Number,
+    hearts: Number, 
     comments:[
         {
             commentAuthor: String,

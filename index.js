@@ -51,7 +51,7 @@ app.get('/fetchPosts',(req,res)=>{
 })
 
 app.post('/deletePost',(req,res)=>{
-console.log(req.body);
+
 	SocialPost.findOneAndDelete({_id: req.body.id},function(err,result){
 		if(err) res.send(err);
 		else res.json({'status': 'deleted successfully'});
@@ -66,9 +66,20 @@ app.get('/fetchPost/:id',(req,res)=>{
 })
 
 app.post('/like',(req,res)=>{
-	console.log("liked");
+	
 	var action=req.body.action=="decrease"?-1:1;
 	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{likes: action}},function(err,response){
+		if(err) throw err;
+		else{
+			res.json({});
+		}
+	})
+})
+
+app.post('/heart',(req,res)=>{
+	
+	var action=req.body.action=="decrease"?-1:1;
+	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{hearts: action}},function(err,response){
 		if(err) throw err;
 		else{
 			res.json({});
@@ -89,7 +100,7 @@ app.post('/changeProfile',upload.single('image'),(req,res)=>{
 
 
 app.post('/post',upload.single('file'),(req,res)=>{
-	console.log("post reached");
+	
 	
 if(req.file){bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(err,file,response){
         if(err) throw err;
