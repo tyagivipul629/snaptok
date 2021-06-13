@@ -76,6 +76,15 @@ app.post('/like',(req,res)=>{
 	})
 })
 
+app.post('/postComment',(req,res)=>{
+	const id=req.body.id;
+	del req.body.id;
+	SocialPost.findByIdAndUpdate({_id: id},{$push:{comments: req.body}}, function(err, result){
+		if(err) res.send(err);
+		else res.json(result);
+	})
+})
+
 app.post('/heart',(req,res)=>{
 	
 	var action=req.body.action=="decrease"?-1:1;

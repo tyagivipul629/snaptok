@@ -24,8 +24,7 @@ const PostSchema=mongoose.Schema({
             commentAuthor: String,
             uid: String,
             comment: String,
-            mention: String,
-            dateOfcomment: String,
+            dateOfComment: String,
             replies: [{
                 replyAuthor: String,
                 reply: String,
