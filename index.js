@@ -77,7 +77,6 @@ app.post('/like',(req,res)=>{
 })
 
 app.post('/postComment',(req,res)=>{
-	console.log(req.body);
 	const id=req.body.id;
 	delete req.body.id;
 	SocialPost.findOneAndUpdate({_id: id},{$push:{comments: req.body}}, {'new': true}, function(err, result){
