@@ -22,6 +22,7 @@ const PostSchema=mongoose.Schema({
     comments:[
         {
             commentAuthor: String,
+            uid: String,
             comment: String,
             mention: String,
             dateOfcomment: String,
