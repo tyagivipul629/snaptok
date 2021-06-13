@@ -80,9 +80,9 @@ app.post('/postComment',(req,res)=>{
 	console.log(req.body);
 	const id=req.body.id;
 	delete req.body.id;
-	SocialPost.findByIdAndUpdate({_id: id},{$push:{comments: req.body}}, function(err, result){
+	SocialPost.findOneAndUpdate({_id: id},{$push:{comments: req.body}}, {'new': true}, function(err, result){
 		if(err) res.send(err);
-		else res.json(result);
+		else res.json(result.comments[result.comments.length-1]);
 	})
 })
 
