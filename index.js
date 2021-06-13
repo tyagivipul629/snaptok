@@ -77,6 +77,7 @@ app.post('/like',(req,res)=>{
 })
 
 app.post('/postComment',(req,res)=>{
+	console.log(re.body);
 	const id=req.body.id;
 	del req.body.id;
 	SocialPost.findByIdAndUpdate({_id: id},{$push:{comments: req.body}}, function(err, result){
