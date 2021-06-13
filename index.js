@@ -42,6 +42,12 @@ app.get('/',(req,res)=>{
 	res.json({"status":"success"});
 })
 
+app.post('/deleteComment',(req,res)=>{
+	SocialPost.findByIdAndUpdate({_id: req.body.postId},{$pull: {comments: {_id: req.body.commentId}}},{'new': true},function(err, success){
+		if(err) res.send(err);
+		else res.json({})
+	})
+})
 
 app.get('/fetchPosts',(req,res)=>{
 	SocialPost.find({},{comments: 0,description: 0},function(err,result){
