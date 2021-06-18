@@ -105,7 +105,7 @@ app.post('/postComment',(req,res)=>{
 	SocialPost.findOneAndUpdate({_id: id},{$push:{comments: req.body}}, {'new': true}, function(err, result){
 		if(err) res.send(err);
 		else {
-			req.app.get('io').sockets.emit(req.body.postId,
+			req.app.get('io').sockets.emit(req.body.id,
 				{type: 'COMMENT_ADDED',res: result.comments[result.comments.length-1]});
 			res.json({});
 		}
