@@ -74,7 +74,10 @@ app.post('/deletePost',(req,res)=>{
 
 	SocialPost.findOneAndDelete({_id: req.body.id},function(err,result){
 		if(err) res.send(err);
-		else res.json({'status': 'deleted successfully'});
+		else {
+			req.app.get('io').sockets.emit(req.body.id,{type: 'POST_DELETED'});
+			res.json({});
+		}
 	})
 })
 
