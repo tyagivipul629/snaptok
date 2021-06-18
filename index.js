@@ -45,6 +45,7 @@ app.get('/',(req,res)=>{
 })
 
 io.on('connection',function(socket){
+	console.log("client reached connection");
 	socket.emit('connection',null);
 })
 
