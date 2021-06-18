@@ -4,6 +4,8 @@ const bodyParser=require('body-parser')
 const SocialPost=require('./CollectionsSchema.js')
 const multer=require('multer')
 const cors=require('cors')
+const http=require('http').createServer(app)
+const io=require('socket.io')(http)
 const {Storage} = require('@google-cloud/storage')
 const fs=require('fs')
 
@@ -40,6 +42,10 @@ const upload = multer({
 
 app.get('/',(req,res)=>{
 	res.json({"status":"success"});
+})
+
+io.on('connection',function(socket){
+	socket.emit('connection',null);
 })
 
 app.post('/deleteComment',(req,res)=>{
@@ -144,7 +150,7 @@ if(req.file){bucket.upload(req.file.path,{destination: 'files/'+req.file.filenam
 })
 
 
-app.listen(process.env.PORT||8080,function(error) {
+http.listen(process.env.PORT||8080,function(error) {
 	if(error) throw error
 		console.log("Server created Successfully on PORT 8080")
 })
