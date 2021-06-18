@@ -12,6 +12,8 @@ const io=require('socket.io')(http,options={
 const {Storage} = require('@google-cloud/storage')
 const fs=require('fs')
 
+app.set('io',io);
+
 const storage = new Storage({
     projectId: "gratis-3ce5a",
     keyFilename: "certfile.json"
@@ -55,7 +57,9 @@ io.on('connection',function(socket){
 app.post('/deleteComment',(req,res)=>{
 	SocialPost.findByIdAndUpdate({_id: req.body.postId},{$pull: {comments: {_id: req.body.commentId}}},{'new': true},function(err, success){
 		if(err) res.send(err);
-		else res.json({})
+		else {
+			req.app.get('io').sockets.emit(req.body.postId,{commentId: req.body.commentId});
+			res.json({})}
 	})
 })
 
