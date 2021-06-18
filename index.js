@@ -7,7 +7,7 @@ const cors=require('cors')
 const http=require('http').createServer(app)
 const io=require('socket.io')(http,options={
 	cors:true,
-	origins:["http://localhost:8080"],
+	origins:["http://localhost:3000"],
    })
 const {Storage} = require('@google-cloud/storage')
 const fs=require('fs')
