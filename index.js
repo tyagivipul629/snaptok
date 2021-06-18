@@ -58,7 +58,7 @@ app.post('/deleteComment',(req,res)=>{
 	SocialPost.findByIdAndUpdate({_id: req.body.postId},{$pull: {comments: {_id: req.body.commentId}}},{'new': true},function(err, success){
 		if(err) res.send(err);
 		else {
-			req.app.get('io').sockets.emit(req.body.postId,{commentId: req.body.commentId});
+			req.app.get('io').sockets.emit(req.body.postId,{type: 'COMMENT_DELETED',commentId: req.body.commentId});
 			res.json({})}
 	})
 })
@@ -101,7 +101,11 @@ app.post('/postComment',(req,res)=>{
 	delete req.body.id;
 	SocialPost.findOneAndUpdate({_id: id},{$push:{comments: req.body}}, {'new': true}, function(err, result){
 		if(err) res.send(err);
-		else res.json(result.comments[result.comments.length-1]);
+		else {
+			req.app.get('io').sockets.emit(req.body.postId,
+				{type: 'COMMENT_ADDED',res: result.comments[result.comments.length-1]});
+			res.json({});
+		}
 	})
 })
 
