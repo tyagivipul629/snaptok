@@ -5,7 +5,10 @@ const SocialPost=require('./CollectionsSchema.js')
 const multer=require('multer')
 const cors=require('cors')
 const http=require('http').createServer(app)
-const io=require('socket.io')(http)
+const io=require('socket.io')(http,options={
+	cors:true,
+	origins:["http://localhost:8080"],
+   })
 const {Storage} = require('@google-cloud/storage')
 const fs=require('fs')
 
