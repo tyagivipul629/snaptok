@@ -70,7 +70,7 @@ app.post('/fetchPosts',(req,res)=>{
 			else res.json(result);
 		})
 	else
-		SocialPost.find({ubGratis: req.body.category},{comments: 0,description: 0},{sort: {dateTime: -1}}, function(err,result){
+		SocialPost.find({subGratis: req.body.category},{comments: 0,description: 0},{sort: {dateTime: -1}}, function(err,result){
 			if(err) res.send(err);
 			else res.json(result);
 		})
