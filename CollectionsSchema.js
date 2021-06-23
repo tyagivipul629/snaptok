@@ -17,7 +17,7 @@ const PostSchema=mongoose.Schema({
     file: String,
     fileType: String,
     subGratis: String,
-    dateOfPost: String,
+    dateTime: String,
     likes: Number,
     hearts: Number, 
     comments:[

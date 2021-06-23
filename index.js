@@ -64,7 +64,7 @@ app.post('/deleteComment',(req,res)=>{
 })
 
 app.get('/fetchPosts',(req,res)=>{
-	SocialPost.find({},{comments: 0,description: 0},function(err,result){
+	SocialPost.find({},{comments: 0,description: 0},{sort: {dateTime: -1}}, function(err,result){
 		if(err) res.send(err);
 		else res.json(result);
        })
