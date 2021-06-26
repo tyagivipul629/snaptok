@@ -64,7 +64,7 @@ app.post('/deleteComment',(req,res)=>{
 })
 
 app.post('postReply',(req,res)=>{
-	SocialPost.updateOne({_id: req.body._id, comments._id: req.body.commentId},
+	SocialPost.updateOne({_id: req.body._id, "comments._id": req.body.commentId},
 		{$push :{'comments.replies': {replyAuthor: req.body.replyAuthor, reply: req.body.reply, 
 			authorProfile: req.body.authorProfile, dateOfReply: req.body.dateOfReply}}},
 			function(err,result){
