@@ -69,7 +69,7 @@ app.post('postReply',(req,res)=>{
 			authorProfile: req.body.authorProfile, dateOfReply: req.body.dateOfReply}}},
 			function(err,result){
 				if(err)
-					res.send(err);
+					res.json({err});
 				else
 					res.json({});
 			})
