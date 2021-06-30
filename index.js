@@ -194,6 +194,7 @@ app.post('/favoritePosts',(req,res)=>{
 })
 
 app.post('/likedPosts',(req,res)=>{
+	console.log(req.body);
 	SocialPost.find({_id: {$in: req.body}},function(err,data){
 		if(err)
 			res.send(err);
