@@ -185,9 +185,9 @@ app.post('/fetchUserPosts',(req,res)=>{
 })
 
 app.post('/favoritePosts',(req,res)=>{
-	SocialPost.find({_id:{$in: req.body}},function(err,data){
+	SocialPost.find({_id:{$in: req.body.hearts}},function(err,data){
 		if(err)
-			res.send(err);
+			res.status(404).send(err);
 		else
 			res.json(data);
 	})
@@ -195,9 +195,9 @@ app.post('/favoritePosts',(req,res)=>{
 
 app.post('/likedPosts',(req,res)=>{
 	console.log(req.body);
-	SocialPost.find({_id: {$in: req.body}},function(err,data){
+	SocialPost.find({_id: {$in: req.body.likes}},function(err,data){
 		if(err)
-			res.send(err);
+			res.status(404).send(err);
 		else
 			res.json(data);
 	})
