@@ -155,7 +155,7 @@ app.post('/heart',(req,res)=>{
 
 app.post('/changeProfile',upload.single('image'),(req,res)=>{
 	if(req.file){
-		bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(err,file,response){
+		bucket.upload(req.file.path,{destination: 'Profile/'+req.file.filename},function(err,file,response){
         if(err) throw err;
         else{
 			fs.unlink(req.file.path,(err)=>{if(err) throw err;})
@@ -163,6 +163,45 @@ app.post('/changeProfile',upload.single('image'),(req,res)=>{
 		}
     })}
 })
+
+app.post('/changeBackground',upload.single('image'),(req,res)=>{
+	if(req.file){
+		bucket.upload(req.file.path,{destination: 'Profile/'+req.file.filename},function(err,file,response){
+        if(err) throw err;
+        else{
+			fs.unlink(req.file.path,(err)=>{if(err) throw err;})
+			res.json({"status": "success","URL": file.metadata.mediaLink})
+		}
+    })}
+})
+
+app.post('/fetchUserPosts',(req,res)=>{
+	SocialPost.find({uid: req.body.id},function(err,data)=>{
+		if(err)
+			res.json(err);
+		else
+			res.json(data);
+	})
+})
+
+app.post('/favoritePosts',(req,res)=>{
+	SocialPost.find({_id:{$in: req.body}},function(err,data){
+		if(err)
+			res.send(err);
+		else
+			res.json(data);
+	})
+})
+
+app.post('/likedPosts',(req,res)=>{
+	SocialPost.find({_id: {$in: req.body}},function(err,data){
+		if(err)
+			res.send(err);
+		else
+			res.json(data);
+	})
+})
+
 
 
 app.post('/post',upload.single('file'),(req,res)=>{
