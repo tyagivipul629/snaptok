@@ -176,7 +176,7 @@ app.post('/changeBackground',upload.single('image'),(req,res)=>{
 })
 
 app.post('/fetchUserPosts',(req,res)=>{
-	SocialPost.find({uid: req.body.id},function(err,data)=>{
+	SocialPost.find({uid: req.body.id},function(err,data){
 		if(err)
 			res.json(err);
 		else
