@@ -103,9 +103,8 @@ app.post('/fetchPosts',(req,res)=>{
 app.post('/commentedPosts',(req,res)=>{
 	SocialPost.aggregate([
 		{
-		  $match: {
+		  $match: 
 		   {"comments.uid": req.body.id}
-		  },
 		},
 		{
 		  $addFields: {
