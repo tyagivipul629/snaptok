@@ -12,7 +12,6 @@ const PostSchema=mongoose.Schema({
     uid: String,
     email: String,
     title: String,
-    userProfile: String,
     description: String,
     file: String,
     fileType: String,
@@ -25,11 +24,10 @@ const PostSchema=mongoose.Schema({
             commentAuthor: String,
             uid: String,
             comment: String,
-            userProfile: String,
             dateOfComment: String,
             replies: [{
                 replyAuthor: String,
-                authorProfile: String,
+                uid: String,
                 reply: String,
                 dateOfReply: String
             }]
