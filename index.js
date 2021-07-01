@@ -100,6 +100,32 @@ app.post('/fetchPosts',(req,res)=>{
 		})
 })
 
+app.post('/commentedPosts',(req,res)=>{
+	SocialPost.aggregate([
+		{
+		  $match: {
+		   {"comments.uid": req.body.id}
+		  },
+		},
+		{
+		  $addFields: {
+			comments: {
+			  $filter: {
+				input: "$comments",
+				as: "comments",
+				cond: {
+				  $in: ["$$comments.uid", [req.body.id]],
+				},
+			  },
+			},
+		  },
+		},
+	  ]).exec((err, result)=>{
+		  if(err)	res.status(404).send(err);
+		  else		res.json(result);
+	  })
+})
+
 app.post('/deletePost',(req,res)=>{
 
 	SocialPost.findOneAndDelete({_id: req.body.id},function(err,result){
