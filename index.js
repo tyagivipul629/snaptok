@@ -271,12 +271,18 @@ if(req.file){bucket.upload(req.file.path,{destination: 'files/'+req.file.filenam
 
 function requiresLogin(req,res,next){
 	const idToken=req.header('FIREBASE_AUTH_TOKEN');
-	admin.auth().verifyIdToken(idToken).then(decodedToken=>{
-	req.uid=decodedToken.uid;
-	next();
-	}).catch(err=>{
-		res.send("User Not Authenticated");	
-	});
+	if(idToken){
+		admin.auth().verifyIdToken(idToken).then(decodedToken=>{
+			req.uid=decodedToken.uid;
+			next();
+			}).catch(err=>{
+				res.send("User Not Authenticated");	
+			});
+	}
+	else{
+		res.send("User Not Authenticated");
+	}
+	
 }
 
 
