@@ -75,7 +75,7 @@ app.post('/deleteComment',requiresLogin,(req,res)=>{
 app.post('/postReply',requiresLogin,(req,res)=>{
 	SocialPost.findOneAndUpdate({_id: req.body._id, "comments._id": req.body.commentId},
 		{$push :{'comments.$.replies': {replyAuthor: req.body.replyAuthor, reply: req.body.reply, 
-			authorProfile: req.body.authorProfile, dateOfReply: req.body.dateOfReply}}},{new: 'true'},
+			uid: req.body.uid, dateOfReply: req.body.dateOfReply}}},{new: 'true'},
 			function(err,result){
 				if(err)
 					res.json({err});
