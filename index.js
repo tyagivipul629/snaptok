@@ -4,11 +4,20 @@ const bodyParser=require('body-parser')
 const SocialPost=require('./CollectionsSchema.js')
 const multer=require('multer')
 const cors=require('cors')
+const admin=require('firebase-admin')
+const cert=require('./certfile.json')
 const http=require('http').createServer(app)
 const io=require('socket.io')(http,options={
 	cors:true,
 	origins:["http://localhost:3000"],
    })
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(cert),
+  databaseURL: "https://gratis-3ce5a-default-rtdb.firebaseio.com"
+});
+
 const {Storage} = require('@google-cloud/storage')
 const fs=require('fs')
 
@@ -54,7 +63,7 @@ io.on('connection',function(socket){
 	socket.emit('connection',null);
 })
 
-app.post('/deleteComment',(req,res)=>{
+app.post('/deleteComment',requiresLogin,(req,res)=>{
 	SocialPost.findByIdAndUpdate({_id: req.body.postId},{$pull: {comments: {_id: req.body.commentId}}},{'new': true},function(err, success){
 		if(err) res.send(err);
 		else {
@@ -63,7 +72,7 @@ app.post('/deleteComment',(req,res)=>{
 	})
 })
 
-app.post('/postReply',(req,res)=>{
+app.post('/postReply',requiresLogin,(req,res)=>{
 	SocialPost.findOneAndUpdate({_id: req.body._id, "comments._id": req.body.commentId},
 		{$push :{'comments.$.replies': {replyAuthor: req.body.replyAuthor, reply: req.body.reply, 
 			authorProfile: req.body.authorProfile, dateOfReply: req.body.dateOfReply}}},{new: 'true'},
@@ -76,7 +85,7 @@ app.post('/postReply',(req,res)=>{
 			})
 })
 
-app.post('/deleteReply',(req,res)=>{
+app.post('/deleteReply',requiresLogin,(req,res)=>{
 	SocialPost.findOneAndUpdate({_id: req.body._id, "comments._id": req.body.commentId},
 		{$pull :{'comments.$.replies': {_id: req.body.replyId}}},{useFindAndModify: 'false'},
 			function(err){
@@ -87,7 +96,7 @@ app.post('/deleteReply',(req,res)=>{
 			})
 })
 
-app.post('/fetchPosts',(req,res)=>{
+app.post('/fetchPosts',requiresLogin,(req,res)=>{
 	if(req.body.category==="")
 		SocialPost.find({},{comments: 0,description: 0},{sort: {dateTime: -1}}, function(err,result){
 			if(err) res.send(err);
@@ -100,7 +109,7 @@ app.post('/fetchPosts',(req,res)=>{
 		})
 })
 
-app.post('/commentedPosts',(req,res)=>{
+app.post('/commentedPosts',requiresLogin,(req,res)=>{
 	SocialPost.aggregate([
 		{
 		  $match: 
@@ -125,7 +134,7 @@ app.post('/commentedPosts',(req,res)=>{
 	  })
 })
 
-app.post('/deletePost',(req,res)=>{
+app.post('/deletePost',requiresLogin,(req,res)=>{
 
 	SocialPost.findOneAndDelete({_id: req.body.id},function(err,result){
 		if(err) res.send(err);
@@ -136,7 +145,7 @@ app.post('/deletePost',(req,res)=>{
 	})
 })
 
-app.get('/fetchPost/:id',(req,res)=>{
+app.get('/fetchPost/:id',requiresLogin,(req,res)=>{
 	SocialPost.findOne({_id: req.params.id},function(err,post){
 		if(err) res.send(err);
 		else if(post==null) res.json({message: 'Failure'});
@@ -144,7 +153,7 @@ app.get('/fetchPost/:id',(req,res)=>{
 	})
 })
 
-app.post('/like',(req,res)=>{
+app.post('/like',requiresLogin,(req,res)=>{
 	
 	var action=req.body.action=="decrease"?-1:1;
 	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{likes: action}},function(err,response){
@@ -155,7 +164,7 @@ app.post('/like',(req,res)=>{
 	})
 })
 
-app.post('/postComment',(req,res)=>{
+app.post('/postComment',requiresLogin,(req,res)=>{
 	const id=req.body.id;
 	delete req.body.id;
 	SocialPost.findOneAndUpdate({_id: id},{$push:{comments: req.body}}, {'new': true}, function(err, result){
@@ -168,7 +177,7 @@ app.post('/postComment',(req,res)=>{
 	})
 })
 
-app.post('/heart',(req,res)=>{
+app.post('/heart',requiresLogin,(req,res)=>{
 	
 	var action=req.body.action=="decrease"?-1:1;
 	SocialPost.findOneAndUpdate({_id:req.body.id},{$inc:{hearts: action}},function(err,response){
@@ -179,7 +188,7 @@ app.post('/heart',(req,res)=>{
 	})
 })
 
-app.post('/changeProfile',upload.single('image'),(req,res)=>{
+app.post('/changeProfile',requiresLogin,upload.single('image'),(req,res)=>{
 	if(req.file){
 		bucket.upload(req.file.path,{destination: 'Profile/'+req.file.filename},function(err,file,response){
         if(err) throw err;
@@ -190,7 +199,7 @@ app.post('/changeProfile',upload.single('image'),(req,res)=>{
     })}
 })
 
-app.post('/changeBackground',upload.single('image'),(req,res)=>{
+app.post('/changeBackground',requiresLogin,upload.single('image'),(req,res)=>{
 	if(req.file){
 		bucket.upload(req.file.path,{destination: 'Profile/'+req.file.filename},function(err,file,response){
         if(err) throw err;
@@ -201,7 +210,7 @@ app.post('/changeBackground',upload.single('image'),(req,res)=>{
     })}
 })
 
-app.post('/fetchUserPosts',(req,res)=>{
+app.post('/fetchUserPosts',requiresLogin,(req,res)=>{
 	SocialPost.find({uid: req.body.id},function(err,data){
 		if(err)
 			res.json(err);
@@ -210,7 +219,7 @@ app.post('/fetchUserPosts',(req,res)=>{
 	})
 })
 
-app.post('/favoritePosts',(req,res)=>{
+app.post('/favoritePosts',requiresLogin,(req,res)=>{
 	SocialPost.find({_id:{$in: req.body.hearts}},function(err,data){
 		if(err)
 			res.status(404).send(err);
@@ -219,7 +228,7 @@ app.post('/favoritePosts',(req,res)=>{
 	})
 })
 
-app.post('/likedPosts',(req,res)=>{
+app.post('/likedPosts',requiresLogin,(req,res)=>{
 	console.log(req.body);
 	SocialPost.find({_id: {$in: req.body.likes}},function(err,data){
 		if(err)
@@ -231,7 +240,7 @@ app.post('/likedPosts',(req,res)=>{
 
 
 
-app.post('/post',upload.single('file'),(req,res)=>{
+app.post('/post',requiresLogin,upload.single('file'),(req,res)=>{
 	
 	
 if(req.file){bucket.upload(req.file.path,{destination: 'files/'+req.file.filename},function(err,file,response){
@@ -259,6 +268,16 @@ if(req.file){bucket.upload(req.file.path,{destination: 'files/'+req.file.filenam
 			})
 	}
 })
+
+function requiresLogin(req,res,next){
+	const idToken=req.header('FIREBASE_AUTH_TOKEN');
+	admin.auth().verifyIdToken(idToken).then(decodedToken=>{
+	req.uid=decodedToken.uid;
+	next();
+	}).catch(err=>{
+		res.send("User Not Authenticated");	
+	});
+}
 
 
 http.listen(process.env.PORT||8080,function(error) {
