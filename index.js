@@ -139,6 +139,7 @@ app.post('/deletePost',(req,res)=>{
 app.get('/fetchPost/:id',(req,res)=>{
 	SocialPost.findOne({_id: req.params.id},function(err,post){
 		if(err) res.send(err);
+		else if(post==null) res.json({message: 'Failure'});
 		else res.json(post);
 	})
 })
